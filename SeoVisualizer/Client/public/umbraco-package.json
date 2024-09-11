@@ -1,0 +1,20 @@
+﻿{
+  "$schema": "../umbraco-package-schema.json",
+  "name": "SeoVisualizer",
+  "version": "14.0.0",
+  "extensions": [
+    {
+      "type": "propertyEditorUi",
+      "alias": "EnkelMedia.SeoVisualizer",
+      "name": "Seo Visualizer",
+      "element": "/App_Plugins/SeoVisualizer/client.js",
+      "elementName": "seo-visualizer",
+      "meta": {
+        "label": "Seo Visualizer",
+        "icon": "icon-autofill",
+        "group": "common",
+        "propertyEditorSchemaAlias": "Umbraco.Plain.Json"
+      }
+    }
+  ]
+}

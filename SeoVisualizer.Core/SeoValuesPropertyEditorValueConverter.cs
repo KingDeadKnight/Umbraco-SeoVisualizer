@@ -41,7 +41,7 @@ namespace SeoVisualizer
             bool useNoIndex = false;
             string configuredTitleSuffix = "";
 
-            var jConfig = JObject.FromObject(propertyType.DataType.Configuration);
+            var jConfig = JObject.FromObject(propertyType.DataType.ConfigurationObject);
             
             if (jConfig.ContainsKey("titleSuffix"))
             {

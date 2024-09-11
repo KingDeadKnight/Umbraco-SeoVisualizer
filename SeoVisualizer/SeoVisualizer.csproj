@@ -15,4 +15,7 @@
 	<ItemGroup>
 		<None Include="build\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\App_Plugins\" />
+	</ItemGroup>
 </Project>
