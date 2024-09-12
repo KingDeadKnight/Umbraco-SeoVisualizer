@@ -3,8 +3,9 @@
 export default defineConfig({
     build: {
         lib: {
-            entry: "src/seo-visualizer.ts", // your web component source file
+            entry: "src/index.ts", // your web component source file
             formats: ["es"],
+            fileName: "entry"
         },
         outDir: "../wwwroot/App_Plugins/SeoVisualizer", // all compiled files will be placed here
         emptyOutDir: true,
@@ -13,4 +14,5 @@ export default defineConfig({
             external: [/^@umbraco/], // ignore the Umbraco Backoffice package in the build
         },
     },
+    base: '/App_Plugins/SeoVisualizer/',
 });

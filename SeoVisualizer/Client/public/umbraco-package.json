@@ -4,17 +4,10 @@
   "version": "14.0.0",
   "extensions": [
     {
-      "type": "propertyEditorUi",
-      "alias": "EnkelMedia.SeoVisualizer",
-      "name": "Seo Visualizer",
-      "element": "/App_Plugins/SeoVisualizer/client.js",
-      "elementName": "seo-visualizer",
-      "meta": {
-        "label": "Seo Visualizer",
-        "icon": "icon-autofill",
-        "group": "common",
-        "propertyEditorSchemaAlias": "Umbraco.Plain.Json"
-      }
+      "name": "EntryPoint",
+      "alias": "seovisualizer.entrypoint",
+      "type": "backofficeEntryPoint",
+      "js": "/App_Plugins/SeoVisualizer/entry.js"
     }
   ]
 }
