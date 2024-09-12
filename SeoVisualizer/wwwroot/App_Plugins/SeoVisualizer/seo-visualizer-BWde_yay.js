@@ -1,7 +1,7 @@
 import { LitElement as d, html as v, css as n, customElement as m } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin as p } from "@umbraco-cms/backoffice/element-api";
-var h = Object.defineProperty, c = Object.getOwnPropertyDescriptor, u = (a, i, o, t) => {
-  for (var e = t > 1 ? void 0 : t ? c(i, o) : i, l = a.length - 1, s; l >= 0; l--)
+var h = Object.defineProperty, u = Object.getOwnPropertyDescriptor, c = (a, i, o, t) => {
+  for (var e = t > 1 ? void 0 : t ? u(i, o) : i, l = a.length - 1, s; l >= 0; l--)
     (s = a[l]) && (e = (t ? s(i, o, e) : s(e)) || e);
   return t && e && h(i, o, e), e;
 };
@@ -21,13 +21,13 @@ let r = class extends p(d) {
                     <div class="sv-options">
                         <div ng-show="showExcludeTitleSuffix">
                             <label>
-                                <umb-toggle checked="excludeTitleSuffix" on-click="toggleTitleSuffix()"></umb-toggle>
+                                <uui-toggle checked="excludeTitleSuffix" on-click="toggleTitleSuffix()"></uui-toggle>
                                 ${this.localize.term("seoVisualizer_excludeTitleSuffix")}
                             </label>
                         </div>
                         <div ng-show="showNoIndex">
                             <label>
-                                <umb-toggle checked="noIndex" on-click="toggleNoIndex()"></umb-toggle>
+                                <uui-toggle checked="noIndex" on-click="toggleNoIndex()"></uui-toggle>
                                 ${this.localize.term("seoVisualizer_noIndex")}
                             </label>
                         </div>
@@ -129,10 +129,10 @@ r.styles = n`
             color: #00802a;
         }
     `;
-r = u([
+r = c([
   m("seo-visualizer")
 ], r);
 export {
   r as default
 };
-//# sourceMappingURL=seo-visualizer-ClRiXk62.js.map
+//# sourceMappingURL=seo-visualizer-BWde_yay.js.map

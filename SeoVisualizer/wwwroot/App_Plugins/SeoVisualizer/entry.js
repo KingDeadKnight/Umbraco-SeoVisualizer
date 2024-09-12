@@ -3,7 +3,7 @@ const i = [
     type: "propertyEditorUi",
     alias: "EnkelMedia.SeoVisualizer",
     name: "Seo Visualizer",
-    js: () => import("./seo-visualizer-ClRiXk62.js"),
+    js: () => import("./seo-visualizer-BWde_yay.js"),
     elementName: "seo-visualizer",
     meta: {
       label: "Seo Visualizer",

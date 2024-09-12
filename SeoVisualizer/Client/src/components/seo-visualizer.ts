@@ -109,13 +109,13 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
                     <div class="sv-options">
                         <div ng-show="showExcludeTitleSuffix">
                             <label>
-                                <umb-toggle checked="excludeTitleSuffix" on-click="toggleTitleSuffix()"></umb-toggle>
+                                <uui-toggle checked="excludeTitleSuffix" on-click="toggleTitleSuffix()"></uui-toggle>
                                 ${this.localize.term('seoVisualizer_excludeTitleSuffix')}
                             </label>
                         </div>
                         <div ng-show="showNoIndex">
                             <label>
-                                <umb-toggle checked="noIndex" on-click="toggleNoIndex()"></umb-toggle>
+                                <uui-toggle checked="noIndex" on-click="toggleNoIndex()"></uui-toggle>
                                 ${this.localize.term('seoVisualizer_noIndex')}
                             </label>
                         </div>
