@@ -1,16 +1,42 @@
-import { LitElement, html, css, customElement, property } from '@umbraco-cms/backoffice/external/lit';
-import { UmbPropertyEditorUiElement } from "@umbraco-cms/backoffice/extension-registry";
+import {LitElement, html, css, customElement, property, state} from '@umbraco-cms/backoffice/external/lit';
 import {UmbElementMixin} from "@umbraco-cms/backoffice/element-api";
+import {UmbPropertyEditorConfigCollection, UmbPropertyValueChangeEvent} from '@umbraco-cms/backoffice/property-editor';
+
+interface SeoValues {
+    title: string;
+    description: string;
+    noIndex: boolean;
+    excludeTitleSuffix: boolean;
+}
 
 @customElement('seo-visualizer')
-export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(LitElement) implements UmbPropertyEditorUiElement {
+export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(LitElement) {
 
     @property()
-    public value = {};
-    
-   
+    public value: Partial<SeoValues> = {};
+
+    @state()
+    private _useNoIndex: boolean = false;
+
+    @state()
+    private _showTitleSuffix: boolean = false;
+
+    @state()
+    private _maxCharsTitle: number = 60;
+
+    @state()
+    private _maxCharsDescription: number = 160;
+
+    public set config(config: UmbPropertyEditorConfigCollection | undefined) {
+        this._useNoIndex = config?.getValueByAlias('useNoIndex') ?? false;
+        this._showTitleSuffix = config?.getValueByAlias('titleSuffix') ?? false;
+        this._maxCharsTitle = config?.getValueByAlias('maxCharsTitle') ?? 60;
+        this._maxCharsDescription = config?.getValueByAlias('maxCharsDescription') ?? 160;
+    }
+
     static styles = css`
         /* containers */
+
         .sv-form {
             width: 400px;
             float: left;
@@ -24,6 +50,7 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
         }
 
         /* form elements */
+
         div.sv-form input, div.sv-form textarea {
             width: 100%;
         }
@@ -98,41 +125,85 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
         }
     `;
 
+    #dispatchChangeEvent() {
+        this.dispatchEvent(new UmbPropertyValueChangeEvent());
+    }
+
+    #onTitleInput(e: InputEvent) {
+        this.value = {...this.value, title: (e.target as HTMLInputElement).value};
+        this.#dispatchChangeEvent();
+    }
+
+    #onDescriptionInput(e: InputEvent) {
+        this.value = {...this.value, description: (e.target as HTMLInputElement).value};
+        this.#dispatchChangeEvent();
+    }
+
+    #onNoIndexToggle(e: InputEvent) {
+        this.value = {...this.value, noIndex: (e.target as HTMLInputElement).checked};
+        this.#dispatchChangeEvent();
+    }
+
+    #onExcludeTitleSuffixToggle(e: InputEvent) {
+        this.value = {...this.value, excludeTitleSuffix: (e.target as HTMLInputElement).checked};
+        this.#dispatchChangeEvent();
+    }
+
+    getTitle(): string {
+        return this.value?.title || "";
+    }
+
+    getUrl(): string {
+        return "https://toto.be/";
+    }
+
     render() {
-        console.log(this.value)
         return html`
-                <div class="sv-form">
-                    <div>
-                        <uui-input placeholder="${this.localize.term('seoVisualizer_titlePlaceholder')}"></uui-input>
-<!--                    <p ng-class="{'seo-invisible' : title.length > maxCharsTitle }" class="sv-error">${this.localize.term('seoVisualizer_maxLength', 10)}</p>-->
-                        <p class="sv-error">${this.localize.term('seoVisualizer_maxLength', 10)}</p>
-                    </div>
-                    <div>
-                        <uui-textarea placeholder="${this.localize.term('seoVisualizer_descriptionPlaceholder')}"></uui-textarea>
-                        <p class="sv-error">${this.localize.term('seoVisualizer_maxLength', 10)}</p>
-                    </div>
+            <div class="sv-form">
+                <div>
+                    <uui-input placeholder="${this.localize.term('seoVisualizer_titlePlaceholder')}"
+                               @input=${this.#onTitleInput}
+                               .value=${this.value?.title || ""}></uui-input>
+                        <!--                    <p ng-class="{'seo-invisible' : title.length > maxCharsTitle }" class="sv-error">${this.localize.term('seoVisualizer_maxLength', 10)}
+                        </p>-->
+                    <p class="sv-error">${this.localize.term('seoVisualizer_maxLength', this._maxCharsTitle)}</p>
+                </div>
+                <div>
+                    <uui-textarea placeholder="${this.localize.term('seoVisualizer_descriptionPlaceholder')}"
+                                  @input=${this.#onDescriptionInput}
+                                  .value=${this.value?.description || ""}></uui-textarea>
+                    <p class="sv-error">${this.localize.term('seoVisualizer_maxLength', this._maxCharsDescription)}</p>
+                </div>
+                ${ (this._useNoIndex || this._showTitleSuffix) ?
+                html`
                     <div class="sv-options">
-<!--                        <div ng-show="showExcludeTitleSuffix">-->
-                        <div>
+                        ${this._showTitleSuffix ?
+                        html`
                             <label>
-                                <uui-toggle checked="excludeTitleSuffix" on-click="toggleTitleSuffix()"></uui-toggle>
+                                <uui-toggle .checked="${this.value?.excludeTitleSuffix || false}"
+                                            @change="${this.#onExcludeTitleSuffixToggle}">
+                                </uui-toggle>
                                 ${this.localize.term('seoVisualizer_excludeTitleSuffix')}
                             </label>
-                        </div>
-<!--                        <div ng-show="showNoIndex">-->
-                        <div>
+                        ` : ''}
+                        ${this._useNoIndex ?
+                        html`
                             <label>
-                                <uui-toggle checked="noIndex" on-click="toggleNoIndex()"></uui-toggle>
+                                <uui-toggle .checked="${this.value?.noIndex || false}"
+                                            @change="${this.#onNoIndexToggle}">
+                                </uui-toggle>
                                 ${this.localize.term('seoVisualizer_noIndex')}
                             </label>
-                        </div>
+                        ` : ''}
                     </div>
-                </div>
-                <div class="sv-demo">
-                    <h6>{{getTitle()}}</h6>
-                    <p class="sv-url">{{GetUrl()}}</p>
-                    <p>{{description}}</p>
-                </div>
+                ` : ''}
+
+            </div>
+            <div class="sv-demo">
+                <h6>${this.getTitle()}</h6>
+                <p class="sv-url">${this.getUrl()}</p>
+                <p>${this.value?.description || ""}</p>
+            </div>
         `;
     }
 }
