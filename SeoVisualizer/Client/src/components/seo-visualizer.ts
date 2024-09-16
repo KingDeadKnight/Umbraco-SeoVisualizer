@@ -1,10 +1,14 @@
-import { LitElement, html, css, customElement } from '@umbraco-cms/backoffice/external/lit';
+import { LitElement, html, css, customElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbPropertyEditorUiElement } from "@umbraco-cms/backoffice/extension-registry";
 import {UmbElementMixin} from "@umbraco-cms/backoffice/element-api";
 
 @customElement('seo-visualizer')
 export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(LitElement) implements UmbPropertyEditorUiElement {
 
+    @property()
+    public value = {};
+    
+   
     static styles = css`
         /* containers */
         .sv-form {
@@ -95,6 +99,7 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
     `;
 
     render() {
+        console.log(this.value)
         return html`
                 <div class="sv-form">
                     <div>
@@ -107,13 +112,15 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
                         <p class="sv-error">${this.localize.term('seoVisualizer_maxLength', 10)}</p>
                     </div>
                     <div class="sv-options">
-                        <div ng-show="showExcludeTitleSuffix">
+<!--                        <div ng-show="showExcludeTitleSuffix">-->
+                        <div>
                             <label>
                                 <uui-toggle checked="excludeTitleSuffix" on-click="toggleTitleSuffix()"></uui-toggle>
                                 ${this.localize.term('seoVisualizer_excludeTitleSuffix')}
                             </label>
                         </div>
-                        <div ng-show="showNoIndex">
+<!--                        <div ng-show="showNoIndex">-->
+                        <div>
                             <label>
                                 <uui-toggle checked="noIndex" on-click="toggleNoIndex()"></uui-toggle>
                                 ${this.localize.term('seoVisualizer_noIndex')}
