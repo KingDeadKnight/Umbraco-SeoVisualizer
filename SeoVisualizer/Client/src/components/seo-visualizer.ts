@@ -19,7 +19,10 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
     private _useNoIndex: boolean = false;
 
     @state()
-    private _showTitleSuffix: boolean = false;
+    private _titleSuffix: string = '';
+
+    @state()
+    private _showExcludeTitleSuffix: boolean = false;
 
     @state()
     private _maxCharsTitle: number = 60;
@@ -29,7 +32,8 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
 
     public set config(config: UmbPropertyEditorConfigCollection | undefined) {
         this._useNoIndex = config?.getValueByAlias('useNoIndex') ?? false;
-        this._showTitleSuffix = config?.getValueByAlias('titleSuffix') ?? false;
+        this._titleSuffix = config?.getValueByAlias('titleSuffix') ?? '';
+        this._showExcludeTitleSuffix  = !!(this._titleSuffix && this._titleSuffix !== '');
         this._maxCharsTitle = config?.getValueByAlias('maxCharsTitle') ?? 60;
         this._maxCharsDescription = config?.getValueByAlias('maxCharsDescription') ?? 160;
     }
@@ -150,11 +154,44 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
     }
 
     getTitle(): string {
-        return this.value?.title || "";
+        let title = '';
+
+        if (this.value.title && this.value.title !== '') {
+
+            title = this.value.title;
+        } else {
+
+            /*if (currentNode && currentNode.variants) {
+
+                if (culture && currentNode.variants.length > 1) {
+                    var variantForCulture = currentNode.variants.filter(x => x.language.culture == culture).shift();
+                    title = variantForCulture.name;
+                }
+                else {
+                    title = currentNode.variants[0].name;
+                }
+
+            } else {
+                title = '';
+            }*/
+
+        }
+
+        // Only append suffix if we have a value to render.
+        if (title === '') {
+            return title;
+        }
+
+        // Only append suffix if there is a value set
+        if (this.value && this._showExcludeTitleSuffix && !this.value.excludeTitleSuffix) {
+            return `${title} ${this._titleSuffix}`;
+        } else {
+            return title;
+        }
     }
 
     getUrl(): string {
-        return "https://toto.be/";
+        return "https://toto2.be/";
     }
 
     render() {
@@ -174,10 +211,10 @@ export default class UmbPropertyEditorUISeoVisualizer extends UmbElementMixin(Li
                                   .value=${this.value?.description || ""}></uui-textarea>
                     <p class="sv-error">${this.localize.term('seoVisualizer_maxLength', this._maxCharsDescription)}</p>
                 </div>
-                ${ (this._useNoIndex || this._showTitleSuffix) ?
+                ${ (this._useNoIndex || this._showExcludeTitleSuffix) ?
                 html`
                     <div class="sv-options">
-                        ${this._showTitleSuffix ?
+                        ${this._showExcludeTitleSuffix ?
                         html`
                             <label>
                                 <uui-toggle .checked="${this.value?.excludeTitleSuffix || false}"
