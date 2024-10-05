@@ -18,7 +18,13 @@ public class SeoVisualizerPropertyEditor : DataEditor
     ) : base(dataValueEditorFactory)
     {
         _ioHelper = ioHelper;
-        DefaultConfiguration = new Dictionary<string, object>() { { "useNoIndex", false }, { "titleSuffix", "" } };
+        DefaultConfiguration = new Dictionary<string, object>()
+        {
+            { "maxCharsTitle", 0 },
+            { "maxCharsDescription", 0 },
+            { "titleSuffix", "" },
+            { "useNoIndex", false },
+        };
     }
 
     protected override IConfigurationEditor CreateConfigurationEditor() => new SeoVisualizerConfigurationEditor(_ioHelper);

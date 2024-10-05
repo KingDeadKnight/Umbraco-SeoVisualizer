@@ -5,9 +5,16 @@ namespace SeoVisualizer;
 
 public class SeoVisualizerPreValueConfiguration
 {
-    [ConfigurationField("useNoIndex")]
-    public bool UseNoIndex { get; set; }
+
+    [ConfigurationField("maxCharsTitle")]
+    public int MaxCharsTitle { get; set; }
+
+    [ConfigurationField("maxCharsDescription")]
+    public int MaxCharsDescription { get; set; }
 
     [ConfigurationField("titleSuffix")]
-    public string TitleSuffix { get; set; }
+    public string? TitleSuffix { get; set; }
+
+    [ConfigurationField("useNoIndex")]
+    public bool UseNoIndex { get; set; }
 }
