@@ -14,6 +14,7 @@ dotnet add package UmbracoSeoVisualizer
 ```
 
 ### Version
+* [Version 13 for Umbraco 13](https://github.com/enkelmedia/Umbraco-SeoVisualizer/tree/v14)
 * [Version 13 for Umbraco 13](https://github.com/enkelmedia/Umbraco-SeoVisualizer/tree/v13)
 * [Version 12 for Umbraco 12](https://github.com/enkelmedia/Umbraco-SeoVisualizer/tree/v12)
 * [Version 11 for Umbraco 11](https://github.com/enkelmedia/Umbraco-SeoVisualizer/tree/v11)
@@ -30,7 +31,7 @@ The property editor just shows a form with two fields
 * **Title Suffix** Can be configured so titles will be rendered like eg `My Page | Umbraco`
 * **No index-toggle** Can be configured to be shown next to the seo-settings.
 
-While typing in the textboxes a preview of the Google snippet is shown in the backoffice.
+While typing in the text boxes a preview of the Google snippet is shown in the backoffice.
 
 ## How to use
 
@@ -71,7 +72,15 @@ The last approach would perform better as the convertion of the object will only
 
 
 ## Contribution
-We welcome any contribution both as in reporting issues and as in writing code, if you're planing to make a Pull Request please start with an issue to let us know and to increase the chances for the PR to be merged.
+We welcome any contribution both as in reporting issues, adding translations and in writing code. If you're planing to make a Pull Request please start with an issue to let us know and to increase the chances for the PR to be merged.
+
+### Running the Project
+Developers should be able to open the solution and just run any of the test-sites in the project, or use `dotnet run`.
+
+#### Frontend
+To get started with the frontend-files, open a terminal, go to the `SeoVisualizer/Client` and run `npm install` (make sure to check the required node version in `.nvmrc` before).
+
+Then just build the frontend assets using `npm run build` or `npm run watch`.
 
 ## Build for NuGet
 

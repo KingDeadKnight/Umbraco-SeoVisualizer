@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SeoVisualizer;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 
@@ -22,7 +18,7 @@ public class SeoVisualizerPropertyEditor : DataEditor
     ) : base(dataValueEditorFactory)
     {
         _ioHelper = ioHelper;
-        DefaultConfiguration = new Dictionary<string, object>() { { "min", 0 }, { "max", 0 } };
+        DefaultConfiguration = new Dictionary<string, object>() { { "useNoIndex", false }, { "titleSuffix", "" } };
     }
 
     protected override IConfigurationEditor CreateConfigurationEditor() => new SeoVisualizerConfigurationEditor(_ioHelper);
@@ -33,11 +29,11 @@ public class SeoVisualizerPropertyEditor : DataEditor
 /// </summary>
 /// <remarks>
 /// The ConfigurationEditor is kind of optional, but it makes it possible to use code like this:
-/// propertyType.DataType.ConfigurationAs<MailingListPickerConfiguration>();
+/// propertyType.DataType.ConfigurationAs<SeoVisualizerPreValueConfiguration>();
 /// is the property value converter, the fact that we extend ConfigurationEditorT brings this automatically.
 /// Without the ConfigurationEditor the PVC would need to access configuration as a dictionary
 /// </remarks>
-public class SeoVisualizerConfigurationEditor : ConfigurationEditor<MailingListPickerConfiguration>
+public class SeoVisualizerConfigurationEditor : ConfigurationEditor<SeoVisualizerPreValueConfiguration>
 {
 
     public SeoVisualizerConfigurationEditor(IIOHelper ioHelper) : base(ioHelper)
@@ -45,11 +41,4 @@ public class SeoVisualizerConfigurationEditor : ConfigurationEditor<MailingListP
     }
 }
 
-public class MailingListPickerConfiguration
-{
-    [ConfigurationField("min")]
-    public int Min { get; set; }
 
-    [ConfigurationField("max")]
-    public int Max { get; set; }
-}
