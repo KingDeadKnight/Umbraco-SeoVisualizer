@@ -8,7 +8,10 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
-
+  <ItemGroup>
+		<PackageReference Include="Umbraco.Cms.Api.Common" Version="14.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="14.0.0" />
+	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\SeoVisualizer.Core\SeoVisualizer.Core.csproj" />
 	</ItemGroup>

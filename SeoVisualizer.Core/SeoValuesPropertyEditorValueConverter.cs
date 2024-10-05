@@ -1,6 +1,7 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Text.Json;
+//using Newtonsoft.Json;
+//using Newtonsoft.Json.Linq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 
@@ -41,22 +42,23 @@ namespace SeoVisualizer
             bool useNoIndex = false;
             string configuredTitleSuffix = "";
 
-            var jConfig = JObject.FromObject(propertyType.DataType.Configuration);
-            
-            if (jConfig.ContainsKey("titleSuffix"))
-            {
-                configuredTitleSuffix = jConfig["titleSuffix"]!.ToObject<string>();
-                useTitleSuffixConfigured = !string.IsNullOrEmpty(configuredTitleSuffix);
-            }
-            if (jConfig.ContainsKey("useNoIndex"))
-            {
-                useNoIndex = jConfig["useNoIndex"].ToString() == "1";
-            }
+            //TODO: v14 fix configuration
+            var jConfig = propertyType.DataType.ConfigurationAs<SeoVisualizerPreValueConfiguration>();
 
+            if(jConfig != null)
+            {
+                useNoIndex = jConfig.UseNoIndex;
+
+                if (!string.IsNullOrEmpty(jConfig.TitleSuffix))
+                {
+                    configuredTitleSuffix = jConfig.TitleSuffix;
+                    useTitleSuffixConfigured = !string.IsNullOrEmpty(configuredTitleSuffix);
+                }
+            }
 
             try
             {
-                var obj = JsonConvert.DeserializeObject<SeoValuesJsonModel>(sourceString);
+                var obj = JsonSerializer.Deserialize<SeoValuesJsonModel>(sourceString);
 
                 if (obj == null)
                     return seoValues;

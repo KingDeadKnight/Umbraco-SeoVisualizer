@@ -3,5 +3,7 @@
 	<PropertyGroup>
 		<PackageId>UmbracoSeoVisualizer.Core</PackageId>
 	</PropertyGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Core" Version="14.0.0" />
+  </ItemGroup>
 </Project>
