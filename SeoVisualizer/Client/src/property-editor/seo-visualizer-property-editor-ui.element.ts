@@ -223,8 +223,7 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
   }
 
   protected firstUpdated() {
-    //this.addFormControlElement(this.shadowRoot!.querySelector('ns-transactional-email-picker')!);
-    console.log('value', this.value);
+    //this.addFormControlElement(this.shadowRoot!.querySelector('element')!);
   }
 
   render() {
@@ -242,7 +241,6 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
              ${when((this.value?.title?.length ?? 0) > this._configRecommendedTitleLength,()=>html`
               <p class="error">${this.localize.term('seoVisualizer_max_length',this._configRecommendedTitleLength)}</p>
             `)}
-
           </div>
           <div>
             <uui-textarea
@@ -266,7 +264,6 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
               <uui-toggle @change=${this.#onNoIndexChange} label=${this.localize.term('seoVisualizer_no_index')} ?checked=${this.value?.noIndex}></uui-toggle>
             </div>
           `)}
-
         </div>
         <div id="preview">
           <div>
@@ -276,35 +273,10 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
           </div>
         </div>
       </div>
-      <hr/>
-      <div>
-        <pre>Config Max Title : ${this._configRecommendedTitleLength}
-Config Max Desc : ${this._configRecommendedDescriptionLength}
-Config Suffix : ${this._configTitleSuffix}
-Config Use no index : ${this._configUseNoIndex}
-Config Show ex title : ${this._configShowExcludeTitleSuffix}
-
-Culture ${this._culture}
-
-Value ${JSON.stringify(this.value,null,2)}
-
-Urls:
-${JSON.stringify(this._urls,null,2)}
-
-Variants:
-${JSON.stringify(this._variants,null,2)}
-
-        </pre>
-      </div>
     `
-
   }
 
   static styles = [UmbTextStyles, css`
-
-    :host {
-      --lorem-ipsum : var(--lorem-ipsum2,#ff00ff);
-    }
 
     #form {
       width:400px;
@@ -317,8 +289,6 @@ ${JSON.stringify(this._variants,null,2)}
     #form uui-input {
       width:100%;
     }
-
-
 
     :host > div {
       display:flex;

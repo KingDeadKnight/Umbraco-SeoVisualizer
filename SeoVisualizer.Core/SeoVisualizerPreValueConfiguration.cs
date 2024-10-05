@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Umbraco.Cms.Core.PropertyEditors;
 
 namespace SeoVisualizer;
