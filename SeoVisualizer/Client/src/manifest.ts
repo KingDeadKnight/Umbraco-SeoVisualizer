@@ -1,15 +1,10 @@
-import type { ManifestLocalization, UmbBackofficeExtensionRegistry } from "@umbraco-cms/backoffice/extension-registry";
-// import { manifests as dashboardManifests } from "./dashboard/manifest.js";
-// import {manifests as activitiesManifest} from './widgets/manifests';
-
-const manifests : Array<ManifestLocalization> = [
-	
-]
+import type { UmbBackofficeExtensionRegistry } from "@umbraco-cms/backoffice/extension-registry";
+import {manifests as propertyEditorManifests} from './property-editor/manifests';
+import {manifests as localizationManifests} from './localization/manifests';
 
 export function registerManifest(registry : UmbBackofficeExtensionRegistry) {
     registry.registerMany([
-		//...dashboardManifests,
-    ...manifests,
-    //...activitiesManifest
+		...propertyEditorManifests,
+    ...localizationManifests
 	]);
 }

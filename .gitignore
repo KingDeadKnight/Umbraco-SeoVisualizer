@@ -49,3 +49,4 @@ xcopy*
 *.TestSite.Multilang/
 
 /build/Artifacts/**/*
+SeoVisualizer/wwwroot/App_Plugins/SeoVisualizer/dist/
