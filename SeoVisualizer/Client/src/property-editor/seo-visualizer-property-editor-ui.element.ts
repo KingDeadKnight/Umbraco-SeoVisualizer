@@ -68,8 +68,6 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
   public set config(config: UmbPropertyEditorConfigCollection | undefined) {
     if (!config) return;
 
-    console.log('config',config);
-
     this._configRecommendedTitleLength = this.#parseInt(config.getValueByAlias('maxCharsTitle'), 60);
     this._configRecommendedDescriptionLength = this.#parseInt(config.getValueByAlias('maxCharsDescription'), 160);
     this._configTitleSuffix = config.getValueByAlias('titleSuffix') ?? "";
@@ -77,26 +75,18 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
     this._configShowExcludeTitleSuffix = (this._configTitleSuffix && this._configTitleSuffix !== '') == true;
   }
 
-  /**
-   *
-   */
   constructor() {
     super();
 
     this.consumeContext(UMB_DOCUMENT_WORKSPACE_CONTEXT, (context) => {
 			this.#workspaceContext = context;
-
-      console.log('ctx',context);
-
 			this.#observeContent();
 		});
 
     this.consumeContext(UMB_PROPERTY_CONTEXT, (propertyContext) => {
-			console.log('property context',propertyContext);
 
       this.observe(propertyContext.variantId,(variantId)=>{
         this._culture = variantId?.culture ?? undefined;
-
         this.#setPropertiesByCulture();
       },'SeoVisualizerVariantIdSubscription')
 		});
@@ -108,7 +98,6 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
     this.observe(
       this.#workspaceContext.urls,
       (urls) => {
-        console.log('urls changed');
         this._urls = [...urls];
         this.#setPropertiesByCulture();
       },
@@ -118,10 +107,8 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
     this.observe(
       this.#workspaceContext.variants,
       (variants) => {
-        console.log('variants changed');
         this._variants = variants;
         this.#setPropertiesByCulture();
-        //this.#observeVariants();
       },
       '_variants',
     );
@@ -134,8 +121,17 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
 
   #setUrl(){
     let urls = this._urls?.filter(x=>x.culture == this._culture);
-    if(!urls || urls?.length == 0)
+
+    // if we can't find matching URL by culture, fallback to any existing url.
+    if(!urls || urls?.length == 0){
+      urls = this._urls;
+    }
+
+    if(!urls || urls.length == 0)
+    {
+      this._previewUrl = 'https://';
       return;
+    }
 
     let url = this.#prependProtocolAndHost(urls[0].url);
 
