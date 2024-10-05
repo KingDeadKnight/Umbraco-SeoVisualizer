@@ -1,4 +1,4 @@
-import { css,html,customElement,property, state, when} from '@umbraco-cms/backoffice/external/lit';
+import { css,html,customElement, state, when} from '@umbraco-cms/backoffice/external/lit';
 import { UmbTextStyles } from '@umbraco-cms/backoffice/style';
 import { UmbLitElement } from '@umbraco-cms/backoffice/lit-element';
 import { UmbPropertyEditorUiElement } from '@umbraco-cms/backoffice/extension-registry';
@@ -20,14 +20,6 @@ import {SeoVisualizerPropertyEditorValue} from "../models/seo-visualizer-propert
 export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<SeoVisualizerPropertyEditorValue | undefined, typeof UmbLitElement>(UmbLitElement, undefined) implements UmbPropertyEditorUiElement {
 
   #workspaceContext? : UmbDocumentWorkspaceContext;
-
-  //TODO: Need to know the current culture.
-
-  /**
-  * Description
-  */
-  @property({type:Boolean})
-  disabled : boolean = false;
 
   @state()
   _culture? : string;
