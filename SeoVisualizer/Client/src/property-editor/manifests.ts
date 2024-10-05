@@ -1,4 +1,5 @@
 import { ManifestPropertyEditorSchema, ManifestPropertyEditorUi } from '@umbraco-cms/backoffice/extension-registry';
+import {DEFAULT_MAX_CHARS_DESCRIPTION, DEFAULT_MAX_CHARS_TITLE} from "../models/constants.ts";
 
 const schema : ManifestPropertyEditorSchema = {
     type : 'propertyEditorSchema',
@@ -36,11 +37,11 @@ const schema : ManifestPropertyEditorSchema = {
             defaultData : [
                 {
                     alias : "maxCharsTitle",
-                    value : 60
+                    value : DEFAULT_MAX_CHARS_TITLE
                 },
                 {
                     alias : "maxCharsDescription",
-                    value : 160
+                    value : DEFAULT_MAX_CHARS_DESCRIPTION
                 }
             ]
         }
