@@ -7,13 +7,8 @@ import { UmbPropertyEditorConfigCollection, UmbPropertyValueChangeEvent } from '
 import { UMB_DOCUMENT_WORKSPACE_CONTEXT, UmbDocumentUrlInfoModel, UmbDocumentVariantModel, UmbDocumentWorkspaceContext } from '@umbraco-cms/backoffice/document';
 import { UMB_PROPERTY_CONTEXT } from '@umbraco-cms/backoffice/property';
 import { UUIInputElement, UUITextareaElement, UUIToggleElement } from '@umbraco-cms/backoffice/external/uui';
-
-interface PropertyEditorValue {
-  title? : string;
-  description? : string;
-  noIndex: boolean;
-  excludeTitleSuffix : boolean;
-}
+import {DEFAULT_MAX_CHARS_DESCRIPTION, DEFAULT_MAX_CHARS_TITLE} from "../models/constants.ts";
+import {SeoVisualizerPropertyEditorValue} from "../models/seo-visualizer-property-editor-value.ts";
 
 /**
 * seo-visualizer-property-editor-ui description
@@ -22,7 +17,7 @@ interface PropertyEditorValue {
 * @cssprop --ns-foo-bar - Color of lorem
 */
 @customElement('seo-visualizer-property-editor-ui')
-export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<PropertyEditorValue | undefined, typeof UmbLitElement>(UmbLitElement, undefined) implements UmbPropertyEditorUiElement {
+export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<SeoVisualizerPropertyEditorValue | undefined, typeof UmbLitElement>(UmbLitElement, undefined) implements UmbPropertyEditorUiElement {
 
   #workspaceContext? : UmbDocumentWorkspaceContext;
 
@@ -68,11 +63,11 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
   public set config(config: UmbPropertyEditorConfigCollection | undefined) {
     if (!config) return;
 
-    this._configRecommendedTitleLength = this.#parseInt(config.getValueByAlias('maxCharsTitle'), 60);
-    this._configRecommendedDescriptionLength = this.#parseInt(config.getValueByAlias('maxCharsDescription'), 160);
+    this._configRecommendedTitleLength = this.#parseInt(config.getValueByAlias('maxCharsTitle'), DEFAULT_MAX_CHARS_TITLE);
+    this._configRecommendedDescriptionLength = this.#parseInt(config.getValueByAlias('maxCharsDescription'), DEFAULT_MAX_CHARS_DESCRIPTION);
     this._configTitleSuffix = config.getValueByAlias('titleSuffix') ?? "";
     this._configUseNoIndex = config.getValueByAlias('useNoIndex') == true
-    this._configShowExcludeTitleSuffix = (this._configTitleSuffix && this._configTitleSuffix !== '') == true;
+    this._configShowExcludeTitleSuffix = !!(this._configTitleSuffix && this._configTitleSuffix !== '');
   }
 
   constructor() {
@@ -182,8 +177,8 @@ export class SeoVisualizerPropertyEditorUiElement extends UmbFormControlMixin<Pr
     return !isNaN(num) && num > 0 ? num : fallback;
   }
 
-  #updateValue(updates : Partial<PropertyEditorValue>) {
-     let newVal : PropertyEditorValue = {
+  #updateValue(updates : Partial<SeoVisualizerPropertyEditorValue>) {
+     let newVal : SeoVisualizerPropertyEditorValue = {
       excludeTitleSuffix : this.value?.excludeTitleSuffix ?? false,
       noIndex : this.value?.noIndex ?? false,
       description : this.value?.description,

@@ -1,0 +1,2 @@
+﻿export const DEFAULT_MAX_CHARS_TITLE = 60;
+export const DEFAULT_MAX_CHARS_DESCRIPTION = 160;
