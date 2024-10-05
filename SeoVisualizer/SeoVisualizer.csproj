@@ -18,4 +18,22 @@
 	<ItemGroup>
 		<None Include="build\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
+  <Target Name="PreBuildClientRelease" BeforeTargets="PreBuild" Condition="$(ConfigurationName) == Release">
+    <Message Text="Building client side assets using npm." Importance="High" />
+    <Exec Command="npm install" WorkingDirectory="$(ProjectDir)\Client" />
+    <Exec Command="npm run build" WorkingDirectory="$(ProjectDir)\Client" />
+    <!-- Ensure nothing from /Client is included in the build artifact -->
+    <ItemGroup>
+      <Compile Remove="Client\**" />
+      <Content Remove="Client\**" />
+      <EmbeddedResource Remove="Client\**" />
+      <None Remove="Client\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="wwwroot\App_Plugins\SeoVizualizer\dist\**" />
+    </ItemGroup>
+  </Target>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(ConfigurationName) != DebugNoClientSideBuild">
+    <Message Text="Client side code was built." Importance="High" />
+  </Target>
 </Project>

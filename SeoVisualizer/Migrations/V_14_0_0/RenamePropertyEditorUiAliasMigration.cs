@@ -1,5 +1,7 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NPoco;
+using Serilog.Core;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
@@ -17,34 +19,42 @@ namespace SeoVisualizer.Migrations.V_14_0_0;
 /// Rename the PropertyEditorUi property for any data type using our property editors
 /// so that it uses the new Property Editor UI
 /// </summary>
-public class RenamePropertyEditorUiAliasMigration : PackageMigrationBase
+public class RenamePropertyEditorUiAliasMigration : MigrationBase
 {
-    public RenamePropertyEditorUiAliasMigration(
-        IPackagingService packagingService,
-        IMediaService mediaService,
-        MediaFileManager mediaFileManager,
-        MediaUrlGeneratorCollection mediaUrlGenerators,
-        IShortStringHelper shortStringHelper,
-        IContentTypeBaseServiceProvider contentTypeBaseServiceProvider,
-        IMigrationContext context,
-        IOptions<PackageMigrationSettings> packageMigrationsSettings) : base(packagingService, mediaService, mediaFileManager, mediaUrlGenerators, shortStringHelper, contentTypeBaseServiceProvider, context, packageMigrationsSettings)
-    {
+    private readonly IDataTypeService _dataTypeService;
+    private readonly IUserService _userService;
 
-    }
+    public RenamePropertyEditorUiAliasMigration(
+        IMigrationContext context,
+        IDataTypeService dataTypeService,
+        IUserService userService
+        ) : base(context)
+    {
+        _dataTypeService = dataTypeService;
+        _userService = userService;
+    } 
 
     protected override void Migrate()
     {
-        Sql<ISqlContext> sql = Sql()
-            .Select<DataTypeDto>()
-            .From<DataTypeDto>()
-            .Where<DataTypeDto>(x => x.EditorUiAlias.Equals("EnkelMedia.SeoVisualizer"));
+        var allDataTypes = _dataTypeService.GetAllAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-        List<DataTypeDto> dataTypeDtos = Database.Fetch<DataTypeDto>(sql);
+        var dataTypes = allDataTypes.Where(x => x.EditorAlias == "EnkelMedia.SeoVisualizer").ToList();
 
-        foreach (var datatype in dataTypeDtos)
+        Logger.LogInformation($"SeoVisualizer, migrating {dataTypes.Count} data types.");
+
+        if (dataTypes.Count == 0)
+            return;
+
+        var user = _userService.GetAll(0, 1, out long _).First();
+
+        foreach (var datatype in dataTypes)
         {
             datatype.EditorUiAlias = "EnkelMedia.SeoVisualizer.PropertyEditorUi";
-            Database.Update(datatype);
+
+            _dataTypeService.UpdateAsync(datatype, user.Key);
+
         }
+
+        Logger.LogInformation($"SeoVisualizer, data types migration successful");
     }
 }
